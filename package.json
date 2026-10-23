@@ -6,6 +6,9 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "tsc -b && vite build",
+    "build:hostinger": "tsc -b && vite build --mode hostinger",
+    "package:hostinger": "pnpm build:hostinger && python3 scripts/package_hostinger.py",
+    "preview:hostinger": "vite preview --mode hostinger --host 0.0.0.0",
     "typecheck": "tsc -b --pretty false",
     "test": "vitest run",
     "preview": "vite preview --host 0.0.0.0"

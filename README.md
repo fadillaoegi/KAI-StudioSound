@@ -53,6 +53,30 @@ Enam file WAV orisinal dibuat secara prosedural memakai Python standard library.
 python3 scripts/generate_audio.py
 ```
 
+## Hostinger: fldevl.biz.id/KAI-sound/
+
+Aplikasi ini dapat dihosting sebagai file statis di shared hosting. Build khusus memakai base `/KAI-sound/` untuk JavaScript, CSS, ikon, font, dan audio. Navigasi memakai hash sehingga tidak membutuhkan konfigurasi rewrite SPA.
+
+```sh
+pnpm package:hostinger
+```
+
+Hasil: `releases/KAI-sound-hostinger.zip`, berisi `index.html`, `assets/`, `audio/`, dan ikon langsung di dalam ZIP. Build mentah tersedia di `dist-hostinger/`.
+
+1. Di File Manager Hostinger, buka `public_html` untuk domain `fldevl.biz.id`.
+2. Unggah `KAI-sound-hostinger.zip` ke `public_html` menggunakan ikon Upload di kanan atas.
+3. Klik kanan file ZIP, pilih Extract, dan isi nama folder hasil ekstrak dengan `KAI-sound`.
+4. Pastikan lokasi hasil adalah `public_html/KAI-sound/index.html`, `public_html/KAI-sound/assets/`, dan `public_html/KAI-sound/audio/`.
+5. Setelah SSL domain aktif, buka `https://fldevl.biz.id/KAI-sound/`. Nama folder memakai huruf besar/kecil yang sama dengan URL.
+
+Preview build ini di perangkat pengembang:
+
+```sh
+pnpm preview:hostinger
+```
+
+Buka URL `/KAI-sound/` pada port yang ditampilkan Vite. Unggahan MP3 di aplikasi tetap disimpan di browser pengunjung; File Manager hanya dipakai untuk memasang file aplikasinya. Hosting ini tidak membutuhkan proses Node.js yang berjalan di server.
+
 Font DM Sans dan ikon Lucide dibundel lokal; aplikasi tidak membutuhkan CDN untuk tampilan atau audio bawaan. Putar audio harus dimulai melalui interaksi pengguna sesuai kebijakan browser.
 
 ## Verifikasi
