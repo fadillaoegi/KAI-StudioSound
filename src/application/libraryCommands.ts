@@ -20,7 +20,7 @@ export const importAudio = command<Sound, File>('library/importAudio', async (fi
   const duration = await api.extra.metadata.duration(audioFile);
   const sound = await api.extra.sounds.save({
     id: createId(), title: file.name.replace(/\.[^.]+$/, ''),
-    subtitle: 'Koleksi pribadi · Tersimpan di perangkat', category: 'pengumuman',
+    subtitle: 'Audio unggahan', category: 'pengumuman',
     duration, color: 'purple', uploaded: true,
   }, audioFile);
   api.dispatch(actions.soundAdded(sound));

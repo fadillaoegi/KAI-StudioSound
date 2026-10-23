@@ -1,0 +1,22 @@
+Options -Indexes
+
+# Only generated audio files are public. Runtime metadata stays private.
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+<FilesMatch "\.(php[0-9]?|phtml|phar|cgi|pl|py|sh)$">
+    Require all denied
+</FilesMatch>
+RemoveHandler .mp3 .wav .ogg .m4a
+<FilesMatch "\.(mp3|wav|ogg|m4a)$">
+    SetHandler default-handler
+</FilesMatch>
+<IfModule mod_mime.c>
+    AddType audio/mpeg .mp3
+    AddType audio/wav .wav
+    AddType audio/ogg .ogg
+    AddType audio/mp4 .m4a
+</IfModule>
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+</IfModule>

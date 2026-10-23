@@ -68,6 +68,20 @@ afterEach(async () => {
 });
 
 describe('complete studio interactions', () => {
+  it('shows other visitors recordings in the shared collection and restricts delete to own uploads', async () => {
+    await mount();
+    await act(async () => fixture.store.dispatch(actions.uploadsLoaded([
+      ...catalog,
+      { ...catalog[0], id: 'someone-else', title: 'Shared recording', uploaded: true, canDelete: false },
+      { ...catalog[0], id: 'my-upload', title: 'My recording', uploaded: true, canDelete: true },
+    ])));
+    expect(host.querySelectorAll('.sound-card')).toHaveLength(10);
+    expect(host.querySelector('[aria-label="Hapus Shared recording"]')).toBe(null);
+    expect(host.querySelector('[aria-label="Hapus My recording"]')).not.toBe(null);
+    await clickText('.sidebar-link', 'Audio Saya');
+    expect(host.querySelectorAll('.sound-card')).toHaveLength(1);
+    expect(host.querySelector('.sound-card h3')?.textContent).toBe('My recording');
+  });
   it('updates active header, breadcrumb, content and URL on every primary navigation', async () => {
     await mount();
     for (const [label, hash, heading] of [['Playlist Saya', '#playlists', '#collection-title'], ['Panduan', '#guide', '#guide-title'], ['Studio Audio', '#library', '#collection-title']]) {

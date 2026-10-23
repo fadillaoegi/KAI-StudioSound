@@ -10,6 +10,7 @@ export interface Sound {
   src?: string;
   text?: string;
   uploaded?: boolean;
+  canDelete?: boolean;
 }
 export interface Playlist { id: string; name: string; soundIds: string[] }
 export interface Preferences { favorites: string[]; volume: number; repeat: boolean; playlists: Playlist[] }

@@ -54,7 +54,7 @@ const studioSlice = createSlice({
     playlistSaved(state, action: PayloadAction<Playlist>) { state.playlists.push(action.payload); state.notice = 'Playlist berhasil disimpan'; },
     playlistDeleted(state, action: PayloadAction<string>) { state.playlists = state.playlists.filter(item => item.id !== action.payload); },
     playlistLoaded(state, action: PayloadAction<string>) { const p = state.playlists.find(item => item.id === action.payload); if (p) { state.queue = p.soundIds.filter(id => state.sounds.some(sound => sound.id === id)); state.activeId = null; state.status = 'idle'; state.currentTime = 0; state.notice = `Playlist “${p.name}” dimuat`; } },
-    soundAdded(state, action: PayloadAction<Sound>) { state.sounds.push(action.payload); state.notice = 'Audio berhasil ditambahkan ke koleksi pribadi'; },
+    soundAdded(state, action: PayloadAction<Sound>) { state.sounds.push(action.payload); state.notice = 'Audio berhasil ditambahkan ke koleksi'; },
     soundDeleted(state, action: PayloadAction<string>) {
       state.sounds = state.sounds.filter(sound => sound.id !== action.payload); state.queue = state.queue.filter(id => id !== action.payload); state.favorites = state.favorites.filter(id => id !== action.payload);
       state.playlists.forEach(playlist => { playlist.soundIds = playlist.soundIds.filter(id => id !== action.payload); });

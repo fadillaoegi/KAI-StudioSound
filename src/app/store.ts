@@ -4,9 +4,12 @@ import { BrowserAudioMetadataReader } from '../data/BrowserAudioMetadataReader';
 import { IndexedDbSoundRepository, LocalPreferencesRepository } from '../data/repositories';
 import { actions, studioReducer } from '../application/studioSlice';
 import { catalog } from '../data/catalog';
+import { HttpSoundRepository } from '../data/HttpSoundRepository';
 
 const preferences = new LocalPreferencesRepository();
-const soundRepository = new IndexedDbSoundRepository();
+const soundRepository = import.meta.env.MODE === 'hostinger'
+  ? new HttpSoundRepository()
+  : new IndexedDbSoundRepository();
 const listener = createListenerMiddleware();
 export const store = configureStore({
   reducer: { studio: studioReducer },
@@ -48,5 +51,11 @@ startListening({
 store.dispatch(actions.preferencesLoaded(preferences.load()));
 engine.setVolume(store.getState().studio.volume);
 store.dispatch(actions.uploadsLoaded(catalog));
-void soundRepository.list().then(sounds => store.dispatch(actions.uploadsLoaded([...catalog, ...sounds]))).catch(error => store.dispatch(actions.noticeShown(error instanceof Error ? error.message : 'Koleksi pribadi gagal dimuat.')));
-if (import.meta.hot) import.meta.hot.dispose(() => engine.dispose());
+const refreshLibrary = () => soundRepository.list()
+  .then(sounds => store.dispatch(actions.uploadsLoaded([...catalog, ...sounds])))
+  .catch(error => store.dispatch(actions.noticeShown(error instanceof Error ? error.message : 'Koleksi audio gagal dimuat.')));
+void refreshLibrary();
+// Reload shared recordings when a visitor returns to the tab.
+const refreshOnFocus = () => { if (import.meta.env.MODE === 'hostinger') void refreshLibrary(); };
+window.addEventListener('focus', refreshOnFocus);
+if (import.meta.hot) import.meta.hot.dispose(() => { engine.dispose(); window.removeEventListener('focus', refreshOnFocus); });

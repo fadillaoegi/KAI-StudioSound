@@ -13,6 +13,8 @@ release.parent.mkdir(exist_ok=True)
 with ZipFile(release, 'w', compression=ZIP_DEFLATED) as archive:
     for path in sorted(build.rglob('*')):
         if path.is_file():
+            if path.relative_to(build).parts[0] == 'uploads' and path.name != '.htaccess':
+                continue
             archive.write(path, path.relative_to(build).as_posix())
 
 with ZipFile(release) as archive:
